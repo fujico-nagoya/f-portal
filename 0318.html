@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>直結給水化コストシミュレーター</title>
+  
+  <!-- Tailwind CSS の読み込み -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Lucide Icons の読み込み -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@800&family=Noto+Sans+JP:wght@400;700;900&display=swap');
+    
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .font-rounded {
+      font-family: 'M PLUS Rounded 1c', sans-serif;
+    }
+
+    /* ティッカーアニメーション（右端から入って左端へ抜けるように修正） */
+    @keyframes marquee {
+      0% { transform: translateX(100vw); }
+      100% { transform: translateX(-100%); }
+    }
+    
+    .animate-marquee {
+      display: inline-block;
+      white-space: nowrap;
+      animation: marquee 35s linear infinite;
+    }
+
+    /* 満足度の背景帯 */
+    .satisfaction-bg {
+      position: absolute;
+      top: 50%;
+      left: -5%;
+      right: -5%;
+      height: 65%;
+      background-color: #dbeafe; /* Tailwind blue-100 */
+      border-radius: 9999px;
+      transform: translateY(-50%);
+      z-index: -1;
+      opacity: 0.8;
+    }
+
+    /* シミュレーター用アニメーション */
+    .fade-in { animation: fadeIn 0.7s ease-out forwards; }
+    .slide-in-from-bottom { animation: slideInBottom 0.7s ease-out forwards; }
+    .zoom-in { animation: zoomIn 0.5s ease-out forwards; }
+    
+    @keyframes fadeIn { 
+      from { opacity: 0; } 
+      to { opacity: 1; } 
+    }
+    @keyframes slideInBottom { 
+      from { transform: translateY(1rem); opacity: 0; } 
+      to { transform: translateY(0); opacity: 1; } 
+    }
+    @keyframes zoomIn { 
+      from { transform: scale(0.95); opacity: 0; } 
+      to { transform: scale(1); opacity: 1; } 
+    }
+
+    /* モックアップ画像のふわふわアニメーション */
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-15px); }
+      100% { transform: translateY(0px); }
+    }
+    .animate-float {
+      animation: float 6s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-white text-gray-800 relative flex flex-col overflow-x-hidden">
+
+  <!-- =========================================
+      HEADER
+  ========================================= -->
+  <header class="w-full bg-white z-50 relative border-b border-gray-100 shadow-sm">
+    <div class="max-w-7xl mx-auto flex justify-between items-center px-4 md:px-8 py-2">
+      
+      <!-- Logo Area -->
+      <div class="flex items-center">
+        <!-- 同一階層の画像ファイルを指定 -->
+        <img 
+          src="image_050524.png" 
+          alt="直結シミュレートツール ロゴ" 
+          class="h-12 w-auto object-contain" 
+        />
+      </div>
+
+      <!-- Action Area -->
+      <div class="flex items-center gap-6">
+        <div class="hidden lg:flex flex-col items-end">
+          <div class="flex items-center text-[#0088cc] font-bold">
+            <i data-lucide="phone" class="w-5 h-5 mr-1"></i>
+            <span class="text-3xl tracking-wider font-sans">052-853-2717</span>
+          </div>
+          <span class="text-xs text-[#0088cc] font-medium mt-[-4px]">営業時間 9:00〜17:00</span>
+        </div>
+        
+        <div class="flex gap-3">
+          <button class="bg-[#0088cc] hover:bg-[#0077b3] text-white text-sm font-bold py-2.5 px-5 rounded-full flex items-center gap-2 transition-colors shadow-md">
+            <i data-lucide="mail" class="w-4 h-4"></i>
+            無料デモ申込
+          </button>
+          <button class="bg-black hover:bg-gray-800 text-white text-sm font-bold py-2.5 px-5 rounded-full flex items-center gap-2 transition-colors shadow-md hidden sm:flex">
+            <i data-lucide="send" class="w-4 h-4"></i>
+            お問い合わせ・資料請求
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- =========================================
+      HERO SECTION (全体的に約0.85倍にサイズダウン、縦の余白を半分に調整)
+  ========================================= -->
+  <main class="relative w-full flex-grow flex flex-col items-center justify-center min-h-[255px] overflow-hidden">
+    
+    <!-- 背景の装飾 -->
+    <div class="absolute inset-0 z-0 pointer-events-none">
+      <div class="absolute top-0 right-0 w-full md:w-1/2 h-full bg-gradient-to-br from-[#f0f9ff] via-[#e0f2fe] to-white opacity-80"></div>
+      <div class="absolute top-20 right-40 w-64 h-64 bg-white rounded-full mix-blend-overlay filter blur-3xl opacity-60"></div>
+      <div class="absolute bottom-20 right-10 w-96 h-96 bg-blue-100 rounded-full mix-blend-multiply filter blur-3xl opacity-50"></div>
+      
+      <!-- 波形シェイプ -->
+      <svg class="absolute bottom-10 left-0 w-full h-auto text-[#bae6fd]" viewBox="0 0 1440 120" preserveAspectRatio="none">
+        <path fill="currentColor" fill-opacity="0.4" d="M0,60L80,65.3C160,71,320,82,480,82C640,82,800,71,960,65.3C1120,60,1280,60,1360,60L1440,60L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"></path>
+        <path fill="#e0f2fe" d="M0,80L120,74.7C240,69,480,59,720,64C960,69,1200,91,1320,101.3L1440,112L1440,120L1320,120C1200,120,960,120,720,120C480,120,240,120,120,120L0,120Z"></path>
+      </svg>
+    </div>
+
+    <!-- コンテナの最大幅も7xl(1280px)から6xl(1152px)に縮小 -->
+    <div class="w-full max-w-6xl mx-auto flex flex-col md:flex-row items-center relative z-10">
+      
+      <!-- ----- 左側コンテンツ ----- -->
+      <!-- パディングを py-10 から py-5 に減らし、上下の余白を半分に -->
+      <div class="w-full md:w-[55%] px-5 py-5 lg:pl-10 flex flex-col items-start gap-3.5">
+        
+        <!-- 赤いアピールエリア -->
+        <div class="relative bg-[#ff6363] text-white text-[14.5px] leading-snug font-bold py-2.5 px-5 md:px-7 rounded-tl-2xl rounded-br-2xl shadow-md flex items-center gap-2 mt-3 border-2 border-white/20">
+          <i data-lucide="megaphone" class="w-5 h-5 md:w-6 md:h-6 shrink-0 text-white/90"></i>
+          <div class="text-left">
+            建物の管理コストを最適化！<br/>直結給水化による削減効果が一目でわかる！
+          </div>
+        </div>
+
+        <!-- 平均削減額 -->
+        <div class="relative flex items-end z-10 mt-5 mb-1.5">
+          <div class="satisfaction-bg"></div>
+          <div class="flex flex-col text-xl md:text-2xl font-black text-[#22579e] mr-2 mb-3.5 leading-tight">
+            <span>平均</span>
+            <span>削減額</span>
+          </div>
+          <!-- 数値も140pxから119pxに縮小 -->
+          <span class="text-7xl md:text-[119px] leading-none text-[#5bb6e5] font-black tracking-tighter" style="text-shadow: 2px 2px 0px white, -2px -2px 0px white, 2px -2px 0px white, -2px 2px 0px white;">
+            400
+          </span>
+          <span class="text-4xl md:text-5xl text-[#5bb6e5] font-bold ml-1 mb-3.5" style="text-shadow: 1px 1px 0px white, -1px -1px 0px white;">
+            万円
+          </span>
+        </div>
+
+        <!-- 3つの特徴バッジ -->
+        <div class="flex gap-3.5 md:gap-4 mt-1.5">
+          <!-- バッジのサイズを w-28(112px) から w-24(96px) へ縮小 -->
+          <div class="w-20 h-20 md:w-24 md:h-24 rounded-2xl border-[2.5px] border-dashed border-[#5bb6e5] bg-white flex flex-col items-center justify-center text-center shadow-sm relative overflow-hidden group hover:bg-blue-50/50 transition-colors">
+            <i data-lucide="zap" class="text-[#5bb6e5] w-5 h-5 md:w-6 md:h-6 mb-1.5"></i>
+            <span class="text-[9px] md:text-[10px] font-bold text-[#1e3a8a] leading-tight">
+              登録不要で<br/>すぐにわかる
+            </span>
+          </div>
+          <div class="w-20 h-20 md:w-24 md:h-24 rounded-2xl border-[2.5px] border-dashed border-[#5bb6e5] bg-white flex flex-col items-center justify-center text-center shadow-sm relative overflow-hidden group hover:bg-blue-50/50 transition-colors">
+            <i data-lucide="mouse-pointer-click" class="text-[#5bb6e5] w-5 h-5 md:w-6 md:h-6 mb-1.5"></i>
+            <span class="text-[9px] md:text-[10px] font-bold text-[#1e3a8a] leading-tight">
+              物件情報を<br/>入力するだけ
+            </span>
+          </div>
+          <div class="w-20 h-20 md:w-24 md:h-24 rounded-2xl border-[2.5px] border-dashed border-[#5bb6e5] bg-white flex flex-col items-center justify-center text-center shadow-sm relative overflow-hidden group hover:bg-blue-50/50 transition-colors">
+            <i data-lucide="calculator" class="text-[#5bb6e5] w-5 h-5 md:w-6 md:h-6 mb-1.5"></i>
+            <span class="text-[9px] md:text-[10px] font-bold text-[#1e3a8a] leading-tight">
+              最新データで<br/>費用を算出
+            </span>
+          </div>
+        </div>
+
+        <!-- CTAボタン (クリックでシミュレーター部分へスクロール) -->
+        <button onclick="document.getElementById('simulator-section').scrollIntoView({ behavior: 'smooth' });" class="mt-6 bg-[#fdb813] hover:bg-[#f59e0b] text-white text-lg md:text-xl font-bold py-3 px-10 md:px-14 rounded-full flex items-center justify-center gap-2 shadow-[0_6px_20px_rgba(253,184,19,0.4)] transition-transform hover:scale-105 group relative overflow-hidden">
+          <div class="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity"></div>
+          今すぐシミュレートしてみる
+          <i data-lucide="chevron-right" class="w-5 h-5 md:w-7 md:h-7" style="stroke-width: 3;"></i>
+        </button>
+      </div>
+
+      <!-- ----- 右側コンテンツ (モックアップ画像とテキスト) ----- -->
+      <!-- mt-8 を mt-4 に減らして上部余白を調整 -->
+      <div class="w-full md:w-[45%] flex flex-col items-center justify-center relative hidden md:flex mt-4 md:mt-0 z-20">
+        
+        <!-- モックアップ上のテキスト -->
+        <div class="mb-3.5 z-30 text-center -ml-14 md:-ml-28">
+          <span class="inline-block bg-white text-[#1e3a8a] font-black text-lg lg:text-xl px-5 py-2.5 rounded-full shadow-md border-2 border-blue-100 font-rounded tracking-wider">
+            直結給水化コストシミュレーター
+          </span>
+        </div>
+
+        <!-- 同一階層の画像ファイルを指定 (最大高さも縮小) -->
+        <div class="w-[130%] max-w-none flex justify-center -ml-[15%] relative z-20">
+          <img 
+            src="image_mookuup.png" 
+            alt="シミュレーター画面モックアップ" 
+            class="w-full h-auto max-h-[550px] lg:max-h-[660px] object-contain drop-shadow-2xl" 
+          />
+        </div>
+        
+      </div>
+
+    </div>
+  </main>
+
+  <!-- =========================================
+      BOTTOM TICKER
+  ========================================= -->
+  <div class="w-full bg-[#ff5e62] py-2.5 overflow-hidden relative z-20 border-t-2 border-[#ff7a7d]">
+    <div class="animate-marquee text-white font-bold text-lg md:text-xl tracking-wide">
+      <span class="mr-12">直結給水化によるコスト削減効果を無料でシミュレーション！マンションオーナー様・管理会社様向けの専用ツールです。</span>
+      <span class="mr-12">直結給水化によるコスト削減効果を無料でシミュレーション！マンションオーナー様・管理会社様向けの専用ツールです。</span>
+      <span class="mr-12">直結給水化によるコスト削減効果を無料でシミュレーション！マンションオーナー様・管理会社様向けの専用ツールです。</span>
+    </div>
+  </div>
+
+  <!-- =========================================
+      シミュレーターセクション
+  ========================================= -->
+  <!-- py-16 から pt-8 pb-16 に変更して上部余白を半減 -->
+  <div id="simulator-section" class="bg-slate-50 flex flex-col pt-8 pb-16 px-4 sm:px-6 lg:px-8 font-sans text-gray-900 w-full relative z-30">
+    <div class="w-full flex-grow flex items-center justify-center">
+      
+      <!-- Selection View -->
+      <div id="view-selection" class="w-full fade-in slide-in-from-bottom">
+        <!-- mt-8 md:mt-12 を mt-4 md:mt-6 に変更して上部余白をさらに半減 -->
+        <div class="text-center mb-10 mt-4 md:mt-6">
+          <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight mb-4">
+            直結化工事コストシミュレーター
+          </h1>
+          <p class="text-lg text-gray-500 max-w-2xl mx-auto">
+            お客様の目的に合わせて、該当するメニューをご選択ください。
+          </p>
+        </div>
+
+        <div class="max-w-5xl mx-auto px-4">
+          <div class="grid md:grid-cols-2 gap-6 lg:gap-8">
+            
+            <!-- Card 1: Owner -->
+            <div 
+              onclick="showView('view-owner-tool')"
+              class="group relative bg-white border border-gray-200 rounded-3xl p-8 hover:border-blue-500 hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-300 cursor-pointer overflow-hidden flex flex-col h-full"
+            >
+              <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-400 to-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              
+              <div class="w-14 h-14 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <i data-lucide="home" class="w-7 h-7"></i>
+              </div>
+              
+              <h3 class="text-2xl font-bold text-gray-900 mb-3">マンションオーナー様</h3>
+              <p class="text-gray-600 mb-8 flex-grow">
+                <span class="font-semibold text-blue-600">「直結化工事コストシミュレーター」</span>を今すぐご利用いただけます。面倒な登録は不要で、直感的な操作で概算費用の確認が可能です。
+              </p>
+              
+              <ul class="space-y-3 mb-8">
+                <li class="flex items-center text-sm text-gray-600">
+                  <i data-lucide="check-circle-2" class="w-4 h-4 text-green-500 mr-2 flex-shrink-0"></i>
+                  <span>登録不要で即座に利用可能</span>
+                </li>
+                <li class="flex items-center text-sm text-gray-600">
+                  <i data-lucide="check-circle-2" class="w-4 h-4 text-green-500 mr-2 flex-shrink-0"></i>
+                  <span>最新の市場データに基づく算出</span>
+                </li>
+              </ul>
+
+              <button class="w-full flex items-center justify-center py-4 px-4 bg-gray-50 text-blue-600 font-bold rounded-xl group-hover:bg-blue-600 group-hover:text-white transition-colors border border-gray-100 group-hover:border-blue-600 shadow-sm">
+                シミュレーターを起動する
+                <i data-lucide="calculator" class="w-5 h-5 ml-2"></i>
+              </button>
+            </div>
+
+            <!-- Card 2: Management -->
+            <div 
+              onclick="showView('view-management-form')"
+              class="group relative bg-white border border-gray-200 rounded-3xl p-8 hover:border-purple-500 hover:shadow-2xl hover:shadow-purple-500/10 transition-all duration-300 cursor-pointer overflow-hidden flex flex-col h-full"
+            >
+              <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-400 to-pink-400 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              
+              <div class="w-14 h-14 bg-purple-50 text-purple-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <i data-lucide="building-2" class="w-7 h-7"></i>
+              </div>
+              
+              <h3 class="text-2xl font-bold text-gray-900 mb-3">マンション管理会社様</h3>
+              <p class="text-gray-600 mb-8 flex-grow">
+                専用フォームからご入力いただくと、マンション管理会社様向けの専用シミュレーターをご利用いただける限定URLを自動送付いたします。
+              </p>
+
+              <ul class="space-y-3 mb-8">
+                <li class="flex items-center text-sm text-gray-600">
+                  <i data-lucide="check-circle-2" class="w-4 h-4 text-green-500 mr-2 flex-shrink-0"></i>
+                  <span>管理会社様向けの専用機能を追加</span>
+                </li>
+                <li class="flex items-center text-sm text-gray-600">
+                  <i data-lucide="check-circle-2" class="w-4 h-4 text-green-500 mr-2 flex-shrink-0"></i>
+                  <span>詳細なコスト分析やご提案に活用可能</span>
+                </li>
+              </ul>
+
+              <button class="w-full flex items-center justify-center py-4 px-4 bg-gray-50 text-purple-600 font-bold rounded-xl group-hover:bg-purple-600 group-hover:text-white transition-colors border border-gray-100 group-hover:border-purple-600 shadow-sm">
+                専用フォームへ進む
+                <i data-lucide="file-text" class="w-5 h-5 ml-2"></i>
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Owner Tool View -->
+      <div id="view-owner-tool" class="w-full max-w-3xl mx-auto hidden">
+        <button 
+          onclick="showView('view-selection')"
+          class="flex items-center text-gray-500 hover:text-gray-800 mb-6 transition-colors font-medium"
+        >
+          <i data-lucide="chevron-left" class="w-5 h-5 mr-1"></i>
+          メニューへ戻る
+        </button>
+        
+        <div class="bg-white border border-gray-200 rounded-3xl p-8 md:p-12 shadow-sm text-center">
+          <div class="w-20 h-20 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
+            <i data-lucide="calculator" class="w-10 h-10"></i>
+          </div>
+          <h2 class="text-2xl font-bold text-gray-900 mb-4">直結化工事コストシミュレーター</h2>
+          <p class="text-gray-600 mb-8">
+            （※ここはシミュレーションツールの実際の画面に置き換わります）<br/>
+            物件情報をご入力いただくことで、直結化工事の概算コストや改善プランをご提示します。
+          </p>
+          
+          <div class="max-w-md mx-auto space-y-4">
+            <div class="h-12 bg-gray-100 rounded-lg animate-pulse"></div>
+            <div class="h-12 bg-gray-100 rounded-lg animate-pulse"></div>
+            <div class="h-12 bg-gray-100 rounded-lg animate-pulse w-2/3 mx-auto"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Management Form View -->
+      <div id="view-management-form" class="w-full max-w-2xl mx-auto hidden">
+        <button 
+          onclick="showView('view-selection')"
+          class="flex items-center text-gray-500 hover:text-gray-800 mb-6 transition-colors font-medium"
+        >
+          <i data-lucide="chevron-left" class="w-5 h-5 mr-1"></i>
+          メニューへ戻る
+        </button>
+
+        <div class="bg-white border border-gray-200 rounded-3xl p-8 md:p-10 shadow-xl shadow-purple-900/5">
+          <div class="flex items-center mb-8 border-b border-gray-100 pb-6">
+            <div class="w-14 h-14 bg-purple-50 text-purple-600 rounded-2xl flex items-center justify-center mr-5">
+              <i data-lucide="building-2" class="w-7 h-7"></i>
+            </div>
+            <div>
+              <h2 class="text-xl md:text-2xl font-bold text-gray-900 mb-1">管理会社様向け 専用お申し込み</h2>
+              <p class="text-sm text-gray-500">必要事項をご入力ください。専用シミュレーターの限定URLをメールでお送りします。</p>
+            </div>
+          </div>
+
+          <form id="management-form" class="space-y-6">
+            <div>
+              <label class="block text-sm font-bold text-gray-700 mb-2">貴社名 <span class="text-red-500 ml-1">*</span></label>
+              <input required type="text" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition-shadow bg-gray-50 focus:bg-white" placeholder="例：株式会社マンション管理" />
+            </div>
+            
+            <div>
+              <label class="block text-sm font-bold text-gray-700 mb-2">ご担当者名 <span class="text-red-500 ml-1">*</span></label>
+              <input required type="text" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition-shadow bg-gray-50 focus:bg-white" placeholder="例：山田 太郎" />
+            </div>
+
+            <div>
+              <label class="block text-sm font-bold text-gray-700 mb-2">メールアドレス <span class="text-red-500 ml-1">*</span></label>
+              <input required type="email" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition-shadow bg-gray-50 focus:bg-white" placeholder="example@company.com" />
+            </div>
+
+            <div>
+              <label class="block text-sm font-bold text-gray-700 mb-2">お問い合わせ内容 <span class="text-gray-400 font-normal ml-1">(任意)</span></label>
+              <textarea rows="4" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition-shadow bg-gray-50 focus:bg-white" placeholder="ご質問やご要望があればご記入ください"></textarea>
+            </div>
+
+            <button type="submit" class="w-full py-4 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl flex items-center justify-center transition-all shadow-[0_8px_20px_rgba(147,51,234,0.3)] hover:shadow-[0_8px_25px_rgba(147,51,234,0.4)] hover:-translate-y-0.5 text-lg mt-8">
+              専用シミュレーターのURLを受け取る
+              <i data-lucide="arrow-right" class="w-5 h-5 ml-2"></i>
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Success View -->
+      <div id="view-success" class="w-full max-w-lg mx-auto text-center mt-10 hidden">
+        <div class="bg-white border border-gray-200 rounded-3xl p-10 shadow-xl shadow-green-900/5">
+          <div class="w-20 h-20 bg-green-50 text-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
+            <i data-lucide="check-circle-2" class="w-10 h-10"></i>
+          </div>
+          <h2 class="text-2xl font-bold text-gray-900 mb-4">送信が完了しました</h2>
+          <p class="text-gray-600 mb-8 leading-relaxed">
+            お問い合わせいただき、誠にありがとうございます。<br/>
+            ご入力いただいたメールアドレス宛に、<br/>専用シミュレーターの限定URLをお送りいたしました。
+          </p>
+          <button 
+            onclick="showView('view-selection')"
+            class="py-3 px-8 bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold rounded-xl transition-colors"
+          >
+            メニューへ戻る
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- =========================================
+      画面切り替え用 JavaScript
+  ========================================= -->
+  <script>
+    // アイコンの初期化
+    lucide.createIcons();
+
+    // 画面の表示切り替え関数
+    function showView(viewId) {
+      // 全てのビューを非表示にする
+      document.getElementById('view-selection').classList.add('hidden');
+      document.getElementById('view-owner-tool').classList.add('hidden');
+      document.getElementById('view-management-form').classList.add('hidden');
+      document.getElementById('view-success').classList.add('hidden');
+      
+      // 対象のビューを取得
+      const target = document.getElementById(viewId);
+      
+      // アニメーションクラスを一度外してリセット
+      target.classList.remove('fade-in', 'slide-in-from-bottom', 'zoom-in');
+      
+      // リフローを強制してアニメーションを再実行可能にする
+      void target.offsetWidth;
+      
+      // 表示してアニメーションクラスを付与
+      target.classList.remove('hidden');
+      target.classList.add('fade-in');
+      
+      if (viewId === 'view-selection') {
+        target.classList.add('slide-in-from-bottom');
+      } else {
+        target.classList.add('zoom-in');
+      }
+    }
+
+    // フォーム送信時の処理
+    document.getElementById('management-form').addEventListener('submit', function(e) {
+      e.preventDefault(); // 実際のページ遷移を防ぐ
+      showView('view-success'); // 完了画面を表示
+    });
+  </script>
+
+</body>
+</html>
