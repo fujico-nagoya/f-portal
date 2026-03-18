@@ -36,13 +36,13 @@
       animation: marquee 35s linear infinite;
     }
 
-    /* 満足度の背景帯 */
+    /* 満足度の背景帯（下にずらしました） */
     .satisfaction-bg {
       position: absolute;
-      top: 50%;
+      top: 65%; /* 50%から65%に変更して下にずらす */
       left: -5%;
       right: -5%;
-      height: 65%;
+      height: 55%;
       background-color: #dbeafe; /* Tailwind blue-100 */
       border-radius: 9999px;
       transform: translateY(-50%);
@@ -79,7 +79,7 @@
     }
   </style>
 </head>
-<body class="min-h-screen bg-white text-gray-800 relative flex flex-col overflow-x-hidden">
+<body class="min-h-screen bg-white text-gray-800 relative flex flex-col overflow-x-hidden antialiased">
 
   <!-- =========================================
       HEADER
@@ -108,13 +108,10 @@
         </div>
         
         <div class="flex gap-3">
-          <button class="bg-[#0088cc] hover:bg-[#0077b3] text-white text-sm font-bold py-2.5 px-5 rounded-full flex items-center gap-2 transition-colors shadow-md">
-            <i data-lucide="mail" class="w-4 h-4"></i>
-            無料デモ申込
-          </button>
-          <button class="bg-black hover:bg-gray-800 text-white text-sm font-bold py-2.5 px-5 rounded-full flex items-center gap-2 transition-colors shadow-md hidden sm:flex">
+          <!-- お問い合わせボタンのみに変更 -->
+          <button onclick="document.getElementById('contact-section').scrollIntoView({ behavior: 'smooth' });" class="bg-orange-500 hover:bg-orange-600 text-white text-sm font-bold py-2.5 px-5 rounded-full flex items-center gap-2 transition-colors shadow-md hidden sm:flex">
             <i data-lucide="send" class="w-4 h-4"></i>
-            お問い合わせ・資料請求
+            お問い合わせ
           </button>
         </div>
       </div>
@@ -162,9 +159,9 @@
             <span>平均</span>
             <span>削減額</span>
           </div>
-          <!-- 数値も140pxから119pxに縮小 -->
+          <!-- 数値変更 (400 -> 402) -->
           <span class="text-7xl md:text-[119px] leading-none text-[#5bb6e5] font-black tracking-tighter" style="text-shadow: 2px 2px 0px white, -2px -2px 0px white, 2px -2px 0px white, -2px 2px 0px white;">
-            400
+            402
           </span>
           <span class="text-4xl md:text-5xl text-[#5bb6e5] font-bold ml-1 mb-3.5" style="text-shadow: 1px 1px 0px white, -1px -1px 0px white;">
             万円
@@ -177,13 +174,13 @@
           <div class="w-20 h-20 md:w-24 md:h-24 rounded-2xl border-[2.5px] border-dashed border-[#5bb6e5] bg-white flex flex-col items-center justify-center text-center shadow-sm relative overflow-hidden group hover:bg-blue-50/50 transition-colors">
             <i data-lucide="zap" class="text-[#5bb6e5] w-5 h-5 md:w-6 md:h-6 mb-1.5"></i>
             <span class="text-[9px] md:text-[10px] font-bold text-[#1e3a8a] leading-tight">
-              登録不要で<br/>すぐにわかる
+              登録不要で<br/>すぐに使える
             </span>
           </div>
           <div class="w-20 h-20 md:w-24 md:h-24 rounded-2xl border-[2.5px] border-dashed border-[#5bb6e5] bg-white flex flex-col items-center justify-center text-center shadow-sm relative overflow-hidden group hover:bg-blue-50/50 transition-colors">
-            <i data-lucide="mouse-pointer-click" class="text-[#5bb6e5] w-5 h-5 md:w-6 md:h-6 mb-1.5"></i>
+            <i data-lucide="headset" class="text-[#5bb6e5] w-5 h-5 md:w-6 md:h-6 mb-1.5"></i>
             <span class="text-[9px] md:text-[10px] font-bold text-[#1e3a8a] leading-tight">
-              物件情報を<br/>入力するだけ
+              分からないことは<br/>オールサポート
             </span>
           </div>
           <div class="w-20 h-20 md:w-24 md:h-24 rounded-2xl border-[2.5px] border-dashed border-[#5bb6e5] bg-white flex flex-col items-center justify-center text-center shadow-sm relative overflow-hidden group hover:bg-blue-50/50 transition-colors">
@@ -197,7 +194,7 @@
         <!-- CTAボタン (クリックでシミュレーター部分へスクロール) -->
         <button onclick="document.getElementById('simulator-section').scrollIntoView({ behavior: 'smooth' });" class="mt-6 bg-[#fdb813] hover:bg-[#f59e0b] text-white text-lg md:text-xl font-bold py-3 px-10 md:px-14 rounded-full flex items-center justify-center gap-2 shadow-[0_6px_20px_rgba(253,184,19,0.4)] transition-transform hover:scale-105 group relative overflow-hidden">
           <div class="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity"></div>
-          今すぐシミュレートしてみる
+          今すぐ無料でシミュレートしてみる
           <i data-lucide="chevron-right" class="w-5 h-5 md:w-7 md:h-7" style="stroke-width: 3;"></i>
         </button>
       </div>
@@ -208,8 +205,8 @@
         
         <!-- モックアップ上のテキスト -->
         <div class="mb-3.5 z-30 text-center -ml-14 md:-ml-28">
-          <span class="inline-block bg-white text-[#1e3a8a] font-black text-lg lg:text-xl px-5 py-2.5 rounded-full shadow-md border-2 border-blue-100 font-rounded tracking-wider">
-            直結給水化コストシミュレーター
+          <span class="inline-block bg-white text-[#1e3a8a] font-bold text-lg lg:text-xl px-5 py-2.5 rounded-full shadow-md border-2 border-blue-100 tracking-wider antialiased">
+            直結化工事シミュレーター
           </span>
         </div>
 
@@ -228,9 +225,9 @@
   </main>
 
   <!-- =========================================
-      BOTTOM TICKER
+      BOTTOM TICKER (背景色を爽やかなブルーに変更)
   ========================================= -->
-  <div class="w-full bg-[#ff5e62] py-2.5 overflow-hidden relative z-20 border-t-2 border-[#ff7a7d]">
+  <div class="w-full bg-[#0088cc] py-2.5 overflow-hidden relative z-20 border-t-2 border-[#33a1d6]">
     <div class="animate-marquee text-white font-bold text-lg md:text-xl tracking-wide">
       <span class="mr-12">直結給水化によるコスト削減効果を無料でシミュレーション！マンションオーナー様・管理会社様向けの専用ツールです。</span>
       <span class="mr-12">直結給水化によるコスト削減効果を無料でシミュレーション！マンションオーナー様・管理会社様向けの専用ツールです。</span>
@@ -430,6 +427,93 @@
 
     </div>
   </div>
+
+  <!-- =========================================
+      CONTACT & FOOTER
+  ========================================= -->
+  <section id="contact-section" class="bg-[#1e3a8a] text-white py-16 px-4">
+    <div class="max-w-5xl mx-auto text-center">
+      <h2 class="text-2xl md:text-3xl font-bold mb-4">無料現地調査・お見積り依頼</h2>
+      <p class="text-sm md:text-base text-blue-100 mb-10">
+        受水槽のメンテナンスにお悩みの方、コスト削減をご検討の方はお気軽にご相談ください。<br class="hidden md:block"/>
+        しつこい営業は一切いたしません。
+      </p>
+
+      <div class="flex flex-col md:flex-row justify-center items-stretch gap-4 md:gap-6 mb-6">
+        <!-- Phone -->
+        <a href="tel:0528532717" class="bg-white rounded-xl p-4 md:p-6 flex items-center justify-center gap-4 hover:shadow-lg transition-shadow group flex-1">
+          <i data-lucide="phone-call" class="w-8 h-8 text-[#1e3a8a] group-hover:scale-110 transition-transform"></i>
+          <div class="text-left">
+            <div class="text-xs text-gray-500 font-bold">お電話でのご相談</div>
+            <div class="text-2xl md:text-3xl font-black text-[#1e3a8a] tracking-wider">052-853-2717</div>
+          </div>
+        </a>
+
+        <!-- LINE -->
+        <a href="#" class="bg-[#06C755] hover:bg-[#05b34c] rounded-xl p-4 md:p-6 flex items-center justify-center gap-4 transition-colors flex-1">
+          <i data-lucide="message-circle" class="w-8 h-8 text-white"></i>
+          <div class="text-left">
+            <div class="text-xs text-green-100 font-bold">LINEで気軽に</div>
+            <div class="text-xl md:text-2xl font-black text-white tracking-wide">お問い合わせ</div>
+          </div>
+        </a>
+
+        <!-- Web Form -->
+        <a href="#" class="bg-[#2563EB] hover:bg-[#1d4ed8] rounded-xl p-4 md:p-6 flex items-center justify-center gap-4 transition-colors flex-1">
+          <i data-lucide="mail" class="w-8 h-8 text-white"></i>
+          <div class="text-left">
+            <div class="text-xs text-blue-100 font-bold">Webフォームから</div>
+            <div class="text-xl md:text-2xl font-black text-white tracking-wide">お問い合わせ</div>
+          </div>
+        </a>
+      </div>
+
+      <div class="text-sm text-blue-200">
+        受付時間 9:00〜17:00（土日祝除く）
+      </div>
+    </div>
+  </section>
+
+  <footer class="bg-[#0f172a] text-gray-300 py-12 px-4 border-t border-gray-800">
+    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-8 mb-8">
+      
+      <!-- Company Info -->
+      <div class="md:col-span-6 lg:col-span-5">
+        <h3 class="text-white font-bold text-lg mb-4">株式会社フジコー</h3>
+        <p class="text-sm text-gray-400 leading-relaxed">
+          愛知県のビル・マンションの給水方式変更工事（直結給水切替工事）の施工実績多数。東海エリア全域対応、水道局指定の工事店としての確かな技術で、安心・安全な水をお届けします。
+        </p>
+      </div>
+
+      <div class="hidden lg:block lg:col-span-2"></div>
+
+      <!-- Menu -->
+      <div class="md:col-span-3 lg:col-span-2">
+        <h3 class="text-white font-bold text-base mb-4">メニュー</h3>
+        <ul class="space-y-3 text-sm">
+          <li><a href="#" class="hover:text-white transition-colors">トップページ</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">概算見積シミュレーション</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">メリット</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">工事の流れ</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">お問い合わせ</a></li>
+        </ul>
+      </div>
+
+      <!-- Company Links -->
+      <div class="md:col-span-3 lg:col-span-3">
+        <h3 class="text-white font-bold text-base mb-4">会社情報</h3>
+        <ul class="space-y-3 text-sm">
+          <li><a href="#" class="hover:text-white transition-colors">会社概要</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">プライバシーポリシー</a></li>
+        </ul>
+      </div>
+      
+    </div>
+
+    <div class="max-w-6xl mx-auto text-center border-t border-gray-800 pt-8 text-xs text-gray-500">
+      &copy; 2024 Fujiko Co., Ltd. All Rights Reserved.
+    </div>
+  </footer>
 
   <!-- =========================================
       画面切り替え用 JavaScript
