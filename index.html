@@ -157,7 +157,8 @@
         <!-- PCでは隠れ(md:hidden)、スマホでは赤枠と平均削減額の間に表示されます -->
         <!-- =============================================== -->
         <div class="w-full flex flex-col items-center justify-center relative md:hidden my-6 self-center">
-          <div class="mb-3 z-30 text-center">
+          <!-- テキストを画像の左端に揃えるように self-start に変更 -->
+          <div class="mb-2 z-30 self-start ml-4">
             <span class="inline-block bg-white text-[#1e3a8a] font-bold text-base px-6 py-2.5 rounded-full shadow-md border-2 border-blue-100 tracking-wider antialiased">
               直結化工事シミュレーター
             </span>
@@ -224,7 +225,8 @@
       <div class="w-full md:w-[45%] flex flex-col items-center justify-center relative hidden md:flex mt-4 md:mt-0 z-20">
         
         <!-- モックアップ上のテキスト -->
-        <div class="mb-3.5 z-30 text-center -ml-14 md:-ml-28">
+        <!-- テキストを画像の左端に揃えるように self-start に変更し、縦の余白を縮小 -->
+        <div class="mb-2 z-30 self-start md:-ml-8 lg:-ml-12">
           <span class="inline-block bg-white text-[#1e3a8a] font-bold text-lg lg:text-xl px-5 py-2.5 rounded-full shadow-md border-2 border-blue-100 tracking-wider antialiased">
             直結化工事シミュレーター
           </span>
