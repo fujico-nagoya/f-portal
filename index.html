@@ -153,17 +153,12 @@
         </div>
 
         <!-- =============================================== -->
-        <!-- 【スマホ専用表示】モックアップ画像とテキスト -->
+        <!-- 【スマホ専用表示】モックアップ画像 -->
         <!-- PCでは隠れ(md:hidden)、スマホでは赤枠と平均削減額の間に表示されます -->
         <!-- =============================================== -->
         <div class="w-full flex flex-col items-center justify-center relative md:hidden my-6 self-center">
-          <!-- テキストを画像の左端に揃えるように self-start に変更 -->
-          <div class="mb-2 z-30 self-start ml-4">
-            <span class="inline-block bg-white text-[#1e3a8a] font-bold text-base px-6 py-2.5 rounded-full shadow-md border-2 border-blue-100 tracking-wider antialiased">
-              直結化工事シミュレーター
-            </span>
-          </div>
-          <div class="w-[115%] max-w-none flex justify-center -ml-[7.5%] relative z-20">
+          <!-- 画像を少し右にずらすため、左寄せのマージンを解除して微調整 -->
+          <div class="w-[115%] max-w-none flex justify-center relative z-20 ml-2">
             <img 
               src="image_mookuup.png" 
               alt="シミュレーター画面モックアップ" 
@@ -220,18 +215,10 @@
         </button>
       </div>
 
-      <!-- ----- 右側コンテンツ (PC専用: モックアップ画像とテキスト) ----- -->
+      <!-- ----- 右側コンテンツ (PC専用: モックアップ画像) ----- -->
       <!-- スマホでは非表示(hidden)となり、PC(md:flex)でのみ表示されます -->
       <div class="w-full md:w-[45%] flex flex-col items-center justify-center relative hidden md:flex mt-4 md:mt-0 z-20">
         
-        <!-- モックアップ上のテキスト -->
-        <!-- テキストを画像の左端に揃えるように self-start に変更し、縦の余白を縮小 -->
-        <div class="mb-2 z-30 self-start md:-ml-8 lg:-ml-12">
-          <span class="inline-block bg-white text-[#1e3a8a] font-bold text-lg lg:text-xl px-5 py-2.5 rounded-full shadow-md border-2 border-blue-100 tracking-wider antialiased">
-            直結化工事シミュレーター
-          </span>
-        </div>
-
         <!-- 同一階層の画像ファイルを指定 (最大高さも縮小) -->
         <div class="w-[130%] max-w-none flex justify-center -ml-[15%] relative z-20">
           <img 
@@ -279,10 +266,12 @@
         <div class="max-w-5xl mx-auto px-4">
           <div class="grid md:grid-cols-2 gap-6 lg:gap-8">
             
-            <!-- Card 1: Owner -->
-            <div 
-              onclick="showView('view-owner-tool')"
-              class="group relative bg-white border border-gray-200 rounded-3xl p-8 hover:border-blue-500 hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-300 cursor-pointer overflow-hidden flex flex-col h-full"
+            <!-- Card 1: Owner (リンクタグに変更し、別タブで開くように設定) -->
+            <a 
+              href="https://fujico-nagoya.github.io/Owner/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="block group relative bg-white border border-gray-200 rounded-3xl p-8 hover:border-blue-500 hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-300 cursor-pointer overflow-hidden flex flex-col h-full"
             >
               <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-400 to-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity"></div>
               
@@ -306,16 +295,19 @@
                 </li>
               </ul>
 
-              <button class="w-full flex items-center justify-center py-4 px-4 bg-gray-50 text-blue-600 font-bold rounded-xl group-hover:bg-blue-600 group-hover:text-white transition-colors border border-gray-100 group-hover:border-blue-600 shadow-sm">
+              <!-- aタグの中にbuttonを入れるのは非推奨のため、divに変更（見た目はボタンのまま） -->
+              <div class="w-full flex items-center justify-center py-4 px-4 bg-gray-50 text-blue-600 font-bold rounded-xl group-hover:bg-blue-600 group-hover:text-white transition-colors border border-gray-100 group-hover:border-blue-600 shadow-sm pointer-events-none">
                 シミュレーターを起動する
                 <i data-lucide="calculator" class="w-5 h-5 ml-2"></i>
-              </button>
-            </div>
+              </div>
+            </a>
 
-            <!-- Card 2: Management -->
-            <div 
-              onclick="showView('view-management-form')"
-              class="group relative bg-white border border-gray-200 rounded-3xl p-8 hover:border-purple-500 hover:shadow-2xl hover:shadow-purple-500/10 transition-all duration-300 cursor-pointer overflow-hidden flex flex-col h-full"
+            <!-- Card 2: Management (リンクタグに変更し、別タブで開くように設定) -->
+            <a 
+              href="https://www.e-fujico.com/contact/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="block group relative bg-white border border-gray-200 rounded-3xl p-8 hover:border-purple-500 hover:shadow-2xl hover:shadow-purple-500/10 transition-all duration-300 cursor-pointer overflow-hidden flex flex-col h-full"
             >
               <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-400 to-pink-400 opacity-0 group-hover:opacity-100 transition-opacity"></div>
               
@@ -339,111 +331,13 @@
                 </li>
               </ul>
 
-              <button class="w-full flex items-center justify-center py-4 px-4 bg-gray-50 text-purple-600 font-bold rounded-xl group-hover:bg-purple-600 group-hover:text-white transition-colors border border-gray-100 group-hover:border-purple-600 shadow-sm">
+              <div class="w-full flex items-center justify-center py-4 px-4 bg-gray-50 text-purple-600 font-bold rounded-xl group-hover:bg-purple-600 group-hover:text-white transition-colors border border-gray-100 group-hover:border-purple-600 shadow-sm pointer-events-none">
                 専用フォームへ進む
                 <i data-lucide="file-text" class="w-5 h-5 ml-2"></i>
-              </button>
-            </div>
+              </div>
+            </a>
 
           </div>
-        </div>
-      </div>
-
-      <!-- Owner Tool View -->
-      <div id="view-owner-tool" class="w-full max-w-3xl mx-auto hidden">
-        <button 
-          onclick="showView('view-selection')"
-          class="flex items-center text-gray-500 hover:text-gray-800 mb-6 transition-colors font-medium"
-        >
-          <i data-lucide="chevron-left" class="w-5 h-5 mr-1"></i>
-          メニューへ戻る
-        </button>
-        
-        <div class="bg-white border border-gray-200 rounded-3xl p-8 md:p-12 shadow-sm text-center">
-          <div class="w-20 h-20 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
-            <i data-lucide="calculator" class="w-10 h-10"></i>
-          </div>
-          <h2 class="text-2xl font-bold text-gray-900 mb-4">直結化工事コストシミュレーター</h2>
-          <p class="text-gray-600 mb-8">
-            （※ここはシミュレーションツールの実際の画面に置き換わります）<br/>
-            物件情報をご入力いただくことで、直結化工事の概算コストや改善プランをご提示します。
-          </p>
-          
-          <div class="max-w-md mx-auto space-y-4">
-            <div class="h-12 bg-gray-100 rounded-lg animate-pulse"></div>
-            <div class="h-12 bg-gray-100 rounded-lg animate-pulse"></div>
-            <div class="h-12 bg-gray-100 rounded-lg animate-pulse w-2/3 mx-auto"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Management Form View -->
-      <div id="view-management-form" class="w-full max-w-2xl mx-auto hidden">
-        <button 
-          onclick="showView('view-selection')"
-          class="flex items-center text-gray-500 hover:text-gray-800 mb-6 transition-colors font-medium"
-        >
-          <i data-lucide="chevron-left" class="w-5 h-5 mr-1"></i>
-          メニューへ戻る
-        </button>
-
-        <div class="bg-white border border-gray-200 rounded-3xl p-8 md:p-10 shadow-xl shadow-purple-900/5">
-          <div class="flex items-center mb-8 border-b border-gray-100 pb-6">
-            <div class="w-14 h-14 bg-purple-50 text-purple-600 rounded-2xl flex items-center justify-center mr-5">
-              <i data-lucide="building-2" class="w-7 h-7"></i>
-            </div>
-            <div>
-              <h2 class="text-xl md:text-2xl font-bold text-gray-900 mb-1">管理会社様向け 専用お申し込み</h2>
-              <p class="text-sm text-gray-500">必要事項をご入力ください。専用シミュレーターの限定URLをメールでお送りします。</p>
-            </div>
-          </div>
-
-          <form id="management-form" class="space-y-6">
-            <div>
-              <label class="block text-sm font-bold text-gray-700 mb-2">貴社名 <span class="text-red-500 ml-1">*</span></label>
-              <input required type="text" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition-shadow bg-gray-50 focus:bg-white" placeholder="例：株式会社マンション管理" />
-            </div>
-            
-            <div>
-              <label class="block text-sm font-bold text-gray-700 mb-2">ご担当者名 <span class="text-red-500 ml-1">*</span></label>
-              <input required type="text" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition-shadow bg-gray-50 focus:bg-white" placeholder="例：山田 太郎" />
-            </div>
-
-            <div>
-              <label class="block text-sm font-bold text-gray-700 mb-2">メールアドレス <span class="text-red-500 ml-1">*</span></label>
-              <input required type="email" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition-shadow bg-gray-50 focus:bg-white" placeholder="example@company.com" />
-            </div>
-
-            <div>
-              <label class="block text-sm font-bold text-gray-700 mb-2">お問い合わせ内容 <span class="text-gray-400 font-normal ml-1">(任意)</span></label>
-              <textarea rows="4" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition-shadow bg-gray-50 focus:bg-white" placeholder="ご質問やご要望があればご記入ください"></textarea>
-            </div>
-
-            <button type="submit" class="w-full py-4 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl flex items-center justify-center transition-all shadow-[0_8px_20px_rgba(147,51,234,0.3)] hover:shadow-[0_8px_25px_rgba(147,51,234,0.4)] hover:-translate-y-0.5 text-lg mt-8">
-              専用シミュレーターのURLを受け取る
-              <i data-lucide="arrow-right" class="w-5 h-5 ml-2"></i>
-            </button>
-          </form>
-        </div>
-      </div>
-
-      <!-- Success View -->
-      <div id="view-success" class="w-full max-w-lg mx-auto text-center mt-10 hidden">
-        <div class="bg-white border border-gray-200 rounded-3xl p-10 shadow-xl shadow-green-900/5">
-          <div class="w-20 h-20 bg-green-50 text-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
-            <i data-lucide="check-circle-2" class="w-10 h-10"></i>
-          </div>
-          <h2 class="text-2xl font-bold text-gray-900 mb-4">送信が完了しました</h2>
-          <p class="text-gray-600 mb-8 leading-relaxed">
-            お問い合わせいただき、誠にありがとうございます。<br/>
-            ご入力いただいたメールアドレス宛に、<br/>専用シミュレーターの限定URLをお送りいたしました。
-          </p>
-          <button 
-            onclick="showView('view-selection')"
-            class="py-3 px-8 bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold rounded-xl transition-colors"
-          >
-            メニューへ戻る
-          </button>
         </div>
       </div>
 
@@ -538,45 +432,14 @@
   </footer>
 
   <!-- =========================================
-      画面切り替え用 JavaScript
+      JavaScript
   ========================================= -->
   <script>
     // アイコンの初期化
     lucide.createIcons();
-
-    // 画面の表示切り替え関数
-    function showView(viewId) {
-      // 全てのビューを非表示にする
-      document.getElementById('view-selection').classList.add('hidden');
-      document.getElementById('view-owner-tool').classList.add('hidden');
-      document.getElementById('view-management-form').classList.add('hidden');
-      document.getElementById('view-success').classList.add('hidden');
-      
-      // 対象のビューを取得
-      const target = document.getElementById(viewId);
-      
-      // アニメーションクラスを一度外してリセット
-      target.classList.remove('fade-in', 'slide-in-from-bottom', 'zoom-in');
-      
-      // リフローを強制してアニメーションを再実行可能にする
-      void target.offsetWidth;
-      
-      // 表示してアニメーションクラスを付与
-      target.classList.remove('hidden');
-      target.classList.add('fade-in');
-      
-      if (viewId === 'view-selection') {
-        target.classList.add('slide-in-from-bottom');
-      } else {
-        target.classList.add('zoom-in');
-      }
-    }
-
-    // フォーム送信時の処理
-    document.getElementById('management-form').addEventListener('submit', function(e) {
-      e.preventDefault(); // 実際のページ遷移を防ぐ
-      showView('view-success'); // 完了画面を表示
-    });
+    
+    // ※フォーム送信などのページ内遷移がなくなったため、
+    // 不要になったshowView関数やFormSubmitの処理は削除しました。
   </script>
 
 </body>
