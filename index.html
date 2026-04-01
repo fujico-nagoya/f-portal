@@ -142,10 +142,10 @@
       
       <!-- ----- 左側コンテンツ ----- -->
       <!-- パディングを py-10 から py-5 に減らし、上下の余白を半分に -->
-      <div class="w-full md:w-[55%] px-5 py-5 lg:pl-10 flex flex-col items-start gap-3.5">
+      <div class="w-full md:w-[55%] px-5 py-5 lg:pl-10 flex flex-col items-center md:items-start gap-3.5">
         
         <!-- 赤いアピールエリア -->
-        <div class="relative bg-[#ff6363] text-white text-[14.5px] leading-snug font-bold py-2.5 px-5 md:px-7 rounded-tl-2xl rounded-br-2xl shadow-md flex items-center gap-2 mt-3 border-2 border-white/20 self-start">
+        <div class="relative bg-[#ff6363] text-white text-[14.5px] leading-snug font-bold py-2.5 px-5 md:px-7 rounded-tl-2xl rounded-br-2xl shadow-md flex items-center gap-2 mt-3 border-2 border-white/20 self-center md:self-start">
           <i data-lucide="megaphone" class="w-5 h-5 md:w-6 md:h-6 shrink-0 text-white/90"></i>
           <div class="text-left">
             建物の管理コストを最適化！<br/>直結給水化による削減効果が一目でわかる！
@@ -157,8 +157,7 @@
         <!-- PCでは隠れ(md:hidden)、スマホでは赤枠と平均削減額の間に表示されます -->
         <!-- =============================================== -->
         <div class="w-full flex flex-col items-center justify-center relative md:hidden my-6 self-center">
-          <!-- 画像を少し右にずらすため、左寄せのマージンを解除して微調整 -->
-          <div class="w-[115%] max-w-none flex justify-center relative z-20 ml-2">
+          <div class="w-[115%] max-w-none flex justify-center -ml-[7.5%] relative z-20">
             <img 
               src="image_mookuup.png" 
               alt="シミュレーター画面モックアップ" 
@@ -169,7 +168,7 @@
         <!-- =============================================== -->
 
         <!-- 平均削減額 -->
-        <div class="relative flex items-end z-10 mt-2 md:mt-5 mb-1.5 self-start">
+        <div class="relative flex items-end z-10 mt-2 md:mt-5 mb-1.5 self-center md:self-start">
           <div class="satisfaction-bg"></div>
           <div class="flex flex-col text-xl md:text-2xl font-black text-[#22579e] mr-2 mb-3.5 leading-tight">
             <span>平均</span>
@@ -185,7 +184,7 @@
         </div>
 
         <!-- 3つの特徴バッジ -->
-        <div class="flex gap-3.5 md:gap-4 mt-1.5 self-start">
+        <div class="flex gap-3.5 md:gap-4 mt-1.5 self-center md:self-start">
           <!-- バッジのサイズを w-28(112px) から w-24(96px) へ縮小 -->
           <div class="w-20 h-20 md:w-24 md:h-24 rounded-2xl border-[2.5px] border-dashed border-[#5bb6e5] bg-white flex flex-col items-center justify-center text-center shadow-sm relative overflow-hidden group hover:bg-blue-50/50 transition-colors">
             <i data-lucide="zap" class="text-[#5bb6e5] w-5 h-5 md:w-6 md:h-6 mb-1.5"></i>
@@ -208,10 +207,10 @@
         </div>
 
         <!-- CTAボタン (クリックでシミュレーター部分へスクロール) -->
-        <button onclick="document.getElementById('simulator-section').scrollIntoView({ behavior: 'smooth' });" class="mt-6 bg-[#fdb813] hover:bg-[#f59e0b] text-white text-lg md:text-xl font-bold py-3 px-10 md:px-14 rounded-full flex items-center justify-center gap-2 shadow-[0_6px_20px_rgba(253,184,19,0.4)] transition-transform hover:scale-105 group relative overflow-hidden self-start">
+        <button onclick="document.getElementById('simulator-section').scrollIntoView({ behavior: 'smooth' });" class="mt-6 bg-[#fdb813] hover:bg-[#f59e0b] text-white text-lg md:text-xl font-bold py-3 px-8 md:px-14 rounded-full flex items-center justify-center gap-2 shadow-[0_6px_20px_rgba(253,184,19,0.4)] transition-transform hover:scale-105 group relative overflow-hidden self-center md:self-start">
           <div class="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity"></div>
-          今すぐ無料でシミュレートしてみる
-          <i data-lucide="chevron-right" class="w-5 h-5 md:w-7 md:h-7" style="stroke-width: 3;"></i>
+          <span class="text-center leading-tight">今すぐ<br class="md:hidden" />無料でシミュレートしてみる</span>
+          <i data-lucide="chevron-right" class="w-6 h-6 md:w-7 md:h-7 shrink-0" style="stroke-width: 3;"></i>
         </button>
       </div>
 
@@ -259,7 +258,7 @@
             直結化工事コストシミュレーター
           </h1>
           <p class="text-lg text-gray-500 max-w-2xl mx-auto">
-            お客様の目的に合わせて、該当するメニューをご選択ください。
+            お客様の目的に合わせて、<br class="md:hidden" />該当するメニューをご選択ください。
           </p>
         </div>
 
@@ -275,12 +274,12 @@
             >
               <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-400 to-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity"></div>
               
-              <div class="w-14 h-14 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+              <div class="w-14 h-14 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform mx-auto md:mx-0">
                 <i data-lucide="home" class="w-7 h-7"></i>
               </div>
               
-              <h3 class="text-2xl font-bold text-gray-900 mb-3">マンションオーナー様</h3>
-              <p class="text-gray-600 mb-8 flex-grow">
+              <h3 class="text-2xl font-bold text-gray-900 mb-3 text-center md:text-left">マンションオーナー様</h3>
+              <p class="text-gray-600 mb-8 flex-grow text-center md:text-left">
                 <span class="font-semibold text-blue-600">「直結化工事コストシミュレーター」</span>を今すぐご利用いただけます。面倒な登録は不要で、直感的な操作で概算費用の確認が可能です。
               </p>
               
@@ -311,12 +310,12 @@
             >
               <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-400 to-pink-400 opacity-0 group-hover:opacity-100 transition-opacity"></div>
               
-              <div class="w-14 h-14 bg-purple-50 text-purple-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+              <div class="w-14 h-14 bg-purple-50 text-purple-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform mx-auto md:mx-0">
                 <i data-lucide="building-2" class="w-7 h-7"></i>
               </div>
               
-              <h3 class="text-2xl font-bold text-gray-900 mb-3">マンション管理会社様</h3>
-              <p class="text-gray-600 mb-8 flex-grow">
+              <h3 class="text-2xl font-bold text-gray-900 mb-3 text-center md:text-left">マンション管理会社様</h3>
+              <p class="text-gray-600 mb-8 flex-grow text-center md:text-left">
                 専用フォームからご入力いただくと、マンション管理会社様向けの専用シミュレーターをご利用いただける限定URLを自動送付いたします。
               </p>
 
